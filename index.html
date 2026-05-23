@@ -391,6 +391,101 @@
     display: none;
   }
 
+  /* Notification banner */
+  .notif-banner {
+    width: calc(100% - 32px);
+    max-width: 400px;
+    margin: 0 16px 16px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: var(--shadow);
+    display: none;
+    font-size: 0.83rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+
+  .notif-banner.show { display: block; }
+
+  .notif-banner button {
+    margin-top: 10px;
+    padding: 9px 18px;
+    border-radius: 10px;
+    border: none;
+    background: var(--text-dark);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  /* Pause button */
+  .pause-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .pause-label {
+    font-size: 0.83rem;
+    color: var(--neutral);
+    font-weight: 500;
+  }
+
+  .pause-toggle {
+    position: relative;
+    width: 48px;
+    height: 28px;
+    cursor: pointer;
+  }
+
+  .pause-toggle input { opacity: 0; width: 0; height: 0; }
+
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: #ccc;
+    border-radius: 28px;
+    transition: 0.3s;
+  }
+
+  .toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 4px;
+    bottom: 4px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  input:checked + .toggle-slider { background: var(--warm); }
+  input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+  .paused-badge {
+    display: none;
+    background: rgba(231,111,81,0.12);
+    border: 1px solid rgba(231,111,81,0.3);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: var(--warm);
+    font-weight: 500;
+    text-align: center;
+    margin-top: 10px;
+  }
+
   /* Quiet hours */
   .quiet-row {
     display: flex;
@@ -459,6 +554,18 @@
     Check Outside Now
   </button>
   <div class="error-msg" id="errorMsg"></div>
+
+  <div class="pause-row">
+    <div>
+      <div class="pause-label">⏸ Pause while away</div>
+      <div style="font-size:0.72rem;color:var(--neutral);margin-top:2px;">On vacation? Silence all checks.</div>
+    </div>
+    <label class="pause-toggle">
+      <input type="checkbox" id="pauseToggle" onchange="togglePause()">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="paused-badge" id="pausedBadge">⏸ App is paused — checks are off</div>
 </div>
 
 <!-- Result -->
@@ -481,6 +588,12 @@
 
 <div class="last-checked" id="lastChecked"></div>
 
+<!-- Notification prompt banner -->
+<div class="notif-banner" id="notifBanner">
+  🔔 Want a notification when it's time to open windows?
+  <button onclick="requestNotifications()">Enable Notifications</button>
+</div>
+
 <!-- Quiet Hours -->
 <div class="api-card">
   <div class="section-label">🌙 Quiet Hours</div>
@@ -501,7 +614,7 @@
 <script>
   let currentMode = 'cool';
 
-  // Load saved values
+  // Load saved values and auto-check on open
   window.onload = function() {
     const savedKey = localStorage.getItem('owm_api_key');
     if (savedKey) {
@@ -518,7 +631,43 @@
     const savedQE = localStorage.getItem('quiet_end');
     if (savedQS) document.getElementById('quietStart').value = savedQS;
     if (savedQE) document.getElementById('quietEnd').value = savedQE;
+
+    // Restore pause state
+    const paused = localStorage.getItem('paused') === 'true';
+    document.getElementById('pauseToggle').checked = paused;
+    document.getElementById('pausedBadge').style.display = paused ? 'block' : 'none';
+
+    // Show notification prompt if not yet decided
+    if (Notification && Notification.permission === 'default') {
+      document.getElementById('notifBanner').classList.add('show');
+    }
+
+    // Auto-check on open if we have a key and not paused
+    if (savedKey && !paused) {
+      setTimeout(() => checkWeather(true), 800);
+    }
   };
+
+  function requestNotifications() {
+    if (!('Notification' in window)) {
+      alert('Notifications are not supported in this browser. Try opening this in Safari and adding it to your Home Screen first.');
+      return;
+    }
+    Notification.requestPermission().then(permission => {
+      document.getElementById('notifBanner').classList.remove('show');
+      if (permission === 'granted') {
+        new Notification('Window Check 🪟', {
+          body: "You'll now get notified when it's time to open your windows!",
+        });
+      }
+    });
+  }
+
+  function togglePause() {
+    const paused = document.getElementById('pauseToggle').checked;
+    localStorage.setItem('paused', paused);
+    document.getElementById('pausedBadge').style.display = paused ? 'block' : 'none';
+  }
 
   function saveApiKey() {
     const key = document.getElementById('apiKeyInput').value.trim();
@@ -569,22 +718,35 @@
     return currentMinutes >= startMinutes && currentMinutes < endMinutes;
   }
 
-  async function checkWeather() {
+  async function checkWeather(silent = false) {
     const apiKey = localStorage.getItem('owm_api_key') || document.getElementById('apiKeyInput').value.trim();
     const errorEl = document.getElementById('errorMsg');
     const btn = document.getElementById('checkBtn');
 
     errorEl.style.display = 'none';
 
+    // Respect pause
+    if (localStorage.getItem('paused') === 'true') {
+      if (!silent) {
+        errorEl.textContent = 'App is paused. Toggle off "Pause while away" to resume.';
+        errorEl.style.display = 'block';
+      }
+      return;
+    }
+
     if (!apiKey) {
-      errorEl.textContent = 'Please enter and save your API key above first.';
-      errorEl.style.display = 'block';
+      if (!silent) {
+        errorEl.textContent = 'Please enter and save your API key above first.';
+        errorEl.style.display = 'block';
+      }
       return;
     }
 
     if (isQuietTime()) {
-      errorEl.textContent = "You're in quiet hours right now. Adjust your quiet hours above if you'd like to check.";
-      errorEl.style.display = 'block';
+      if (!silent) {
+        errorEl.textContent = "You're in quiet hours right now. Adjust your quiet hours above if you'd like to check.";
+        errorEl.style.display = 'block';
+      }
       return;
     }
 
@@ -612,16 +774,18 @@
       showResult(outsideTemp, feels, targetTemp, description);
 
     } catch (err) {
-      let msg = 'Could not get weather data. ';
-      if (err.message.includes('Invalid API key') || err.message.includes('401')) {
-        msg += 'Your API key may not be active yet — keys can take up to an hour after signup. Try again soon.';
-      } else if (err.message.includes('Failed to fetch')) {
-        msg += 'Check your internet connection and try again.';
-      } else {
-        msg += err.message;
+      if (!silent) {
+        let msg = 'Could not get weather data. ';
+        if (err.message.includes('Invalid API key') || err.message.includes('401')) {
+          msg += 'Your API key may not be active yet — keys can take up to an hour after signup. Try again soon.';
+        } else if (err.message.includes('Failed to fetch')) {
+          msg += 'Check your internet connection and try again.';
+        } else {
+          msg += err.message;
+        }
+        errorEl.textContent = msg;
+        errorEl.style.display = 'block';
       }
-      errorEl.textContent = msg;
-      errorEl.style.display = 'block';
     } finally {
       btn.disabled = false;
       btn.innerHTML = 'Check Outside Now';
@@ -661,6 +825,14 @@
         emoji.textContent = '☀️';
         headline.textContent = 'Open your windows!';
         detail.textContent = `It's ${outside}°F outside — at or above your ${target}° target. Free heat! Let the warm air flow through. It feels like ${feels}°F out there (${description}).`;
+      }
+
+      // Fire a system notification if permission granted
+      if (Notification && Notification.permission === 'granted') {
+        new Notification('🪟 Open your windows!', {
+          body: `It's ${outside}°F outside — ${currentMode === 'cool' ? 'at or below' : 'at or above'} your ${target}° target. Fresh air time!`,
+          icon: 'https://cdn-icons-png.flaticon.com/512/869/869869.png'
+        });
       }
     } else {
       resultCard.className = 'result-card keep-closed';
