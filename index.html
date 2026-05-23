@@ -18,6 +18,9 @@
     --text-dark: #1a1a2e;
     --card-bg: rgba(255,255,255,0.85);
     --shadow: 0 8px 32px rgba(0,0,0,0.12);
+    --green: #2d6a4f;
+    --red: #c0392b;
+    --blue: #2471a3;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -81,12 +84,201 @@
     margin-bottom: 10px;
   }
 
-  /* Zip code input */
+  /* ── Temp display row (outside + target side by side) ── */
+  .temp-display-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.07);
+  }
+
+  .temp-display-block {
+    flex: 1;
+    text-align: center;
+    padding: 16px 8px 14px;
+    transition: background 0.4s, color 0.4s;
+    background: rgba(0,0,0,0.03);
+  }
+
+  .temp-display-block:first-child {
+    border-right: 1px solid rgba(0,0,0,0.07);
+  }
+
+  .temp-display-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--neutral);
+    margin-bottom: 6px;
+  }
+
+  .temp-display-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.6rem;
+    line-height: 1;
+    color: var(--text-dark);
+    transition: color 0.4s;
+  }
+
+  .temp-display-value .unit {
+    font-size: 1.1rem;
+    opacity: 0.6;
+    vertical-align: super;
+  }
+
+  .temp-display-sublabel {
+    font-size: 0.68rem;
+    color: var(--neutral);
+    margin-top: 4px;
+  }
+
+  /* Color states for outside temp block */
+  .temp-display-block.too-hot {
+    background: rgba(192,57,43,0.08);
+  }
+  .temp-display-block.too-hot .temp-display-value { color: var(--red); }
+  .temp-display-block.too-hot .temp-display-label { color: var(--red); opacity: 0.7; }
+
+  .temp-display-block.too-cold {
+    background: rgba(36,113,163,0.08);
+  }
+  .temp-display-block.too-cold .temp-display-value { color: var(--blue); }
+  .temp-display-block.too-cold .temp-display-label { color: var(--blue); opacity: 0.7; }
+
+  .temp-display-block.just-right {
+    background: rgba(45,106,79,0.1);
+  }
+  .temp-display-block.just-right .temp-display-value { color: var(--green); }
+  .temp-display-block.just-right .temp-display-label { color: var(--green); opacity: 0.8; }
+
+  /* Target block when windows should open */
+  .temp-display-block.target-good {
+    background: rgba(45,106,79,0.1);
+  }
+  .temp-display-block.target-good .temp-display-value { color: var(--green); }
+
+  /* ── Status message under temps ── */
+  .status-msg {
+    font-size: 0.83rem;
+    line-height: 1.5;
+    color: var(--neutral);
+    text-align: center;
+    min-height: 20px;
+    margin-bottom: 16px;
+    padding: 0 4px;
+    display: none;
+  }
+
+  .status-msg.visible { display: block; }
+  .status-msg.good { color: var(--green); font-weight: 600; }
+  .status-msg.bad-hot { color: var(--red); }
+  .status-msg.bad-cold { color: var(--blue); }
+
+  /* ── Check button ── */
+  .check-btn {
+    width: 100%;
+    padding: 18px;
+    border-radius: 16px;
+    border: none;
+    background: linear-gradient(135deg, var(--cool), #2a6496);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(69,123,157,0.35);
+    margin-bottom: 8px;
+  }
+
+  .check-btn:active { transform: scale(0.98); }
+  .check-btn.heating { background: linear-gradient(135deg, var(--warm), #c1440e); box-shadow: 0 4px 16px rgba(231,111,81,0.35); }
+  .check-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .last-updated {
+    text-align: center;
+    font-size: 0.73rem;
+    color: var(--neutral);
+    min-height: 18px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  /* ── Divider ── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    margin: 4px 0 20px;
+  }
+
+  /* ── Target temp input ── */
+  .temp-input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .temp-input {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    color: var(--text-dark);
+    width: 110px;
+    border: none;
+    border-bottom: 2px solid var(--sky-mid);
+    background: transparent;
+    text-align: center;
+    outline: none;
+    padding: 0 4px 4px;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .temp-input:focus { border-color: var(--cool); }
+
+  .temp-unit {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--neutral);
+  }
+
+  .temp-hint {
+    font-size: 0.78rem;
+    color: var(--neutral);
+    margin-bottom: 20px;
+  }
+
+  /* ── Mode toggle ── */
+  .mode-row { display: flex; gap: 8px; margin-bottom: 0; }
+
+  .mode-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    background: rgba(0,0,0,0.05);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--neutral);
+  }
+
+  .mode-btn.active-cool { background: rgba(69,123,157,0.12); border-color: var(--cool); color: var(--cool); }
+  .mode-btn.active-heat { background: rgba(231,111,81,0.12); border-color: var(--warm); color: var(--warm); }
+
+  /* ── Zip row ── */
   .zip-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
   }
 
   .zip-input {
@@ -127,99 +319,10 @@
     color: var(--leaf);
     font-weight: 600;
     display: none;
-    margin-top: 4px;
+    margin-bottom: 4px;
   }
 
-  /* Target temp */
-  .temp-input-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 6px;
-  }
-
-  .temp-input {
-    font-family: 'DM Serif Display', serif;
-    font-size: 3rem;
-    color: var(--text-dark);
-    width: 110px;
-    border: none;
-    border-bottom: 2px solid var(--sky-mid);
-    background: transparent;
-    text-align: center;
-    outline: none;
-    padding: 0 4px 4px;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-
-  .temp-input:focus { border-color: var(--cool); }
-
-  .temp-unit {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.8rem;
-    color: var(--neutral);
-  }
-
-  .temp-hint {
-    font-size: 0.78rem;
-    color: var(--neutral);
-    margin-bottom: 20px;
-  }
-
-  /* Mode toggle */
-  .mode-row { display: flex; gap: 8px; margin-bottom: 4px; }
-
-  .mode-btn {
-    flex: 1;
-    padding: 10px 8px;
-    border-radius: 12px;
-    border: 2px solid transparent;
-    background: rgba(0,0,0,0.05);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--neutral);
-  }
-
-  .mode-btn.active-cool { background: rgba(69,123,157,0.12); border-color: var(--cool); color: var(--cool); }
-  .mode-btn.active-heat { background: rgba(231,111,81,0.12); border-color: var(--warm); color: var(--warm); }
-
-  /* Check button */
-  .check-btn {
-    width: 100%;
-    padding: 18px;
-    border-radius: 16px;
-    border: none;
-    background: linear-gradient(135deg, var(--cool), #2a6496);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 20px;
-    letter-spacing: 0.3px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 16px rgba(69,123,157,0.35);
-  }
-
-  .check-btn:active { transform: scale(0.98); }
-  .check-btn.heating { background: linear-gradient(135deg, var(--warm), #c1440e); box-shadow: 0 4px 16px rgba(231,111,81,0.35); }
-  .check-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  /* Last updated */
-  .last-updated {
-    text-align: center;
-    font-size: 0.73rem;
-    color: var(--neutral);
-    margin-top: 10px;
-    min-height: 18px;
-    display: block;
-  }
-
-  /* Spinner */
+  /* ── Spinner ── */
   .spinner {
     display: inline-block;
     width: 18px;
@@ -234,90 +337,7 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Result card */
-  .result-card {
-    width: calc(100% - 32px);
-    max-width: 400px;
-    margin: 0 16px 16px;
-    border-radius: 24px;
-    padding: 28px 24px;
-    display: none;
-    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 1px solid rgba(255,255,255,0.5);
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px) scale(0.97); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  .result-card.open-windows {
-    background: linear-gradient(135deg, rgba(45,106,79,0.92), rgba(52,131,92,0.88));
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(45,106,79,0.3);
-  }
-
-  .result-card.keep-closed {
-    background: linear-gradient(135deg, rgba(13,27,42,0.88), rgba(26,47,69,0.85));
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  }
-
-  .result-emoji {
-    font-size: 3.5rem;
-    margin-bottom: 12px;
-    display: block;
-    animation: bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
-  }
-
-  @keyframes bounce {
-    from { transform: scale(0) rotate(-10deg); }
-    to { transform: scale(1) rotate(0deg); }
-  }
-
-  .result-headline {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.7rem;
-    color: white;
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
-
-  .result-detail {
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.85);
-    line-height: 1.5;
-  }
-
-  .temp-comparison {
-    display: flex;
-    gap: 16px;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.2);
-  }
-
-  .temp-block { flex: 1; text-align: center; }
-
-  .temp-block-label {
-    font-size: 0.65rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 4px;
-    font-weight: 600;
-  }
-
-  .temp-block-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    color: white;
-  }
-
-  .temp-block-value span { font-size: 1rem; opacity: 0.7; }
-  .divider { display: flex; align-items: center; color: rgba(255,255,255,0.4); font-size: 1.2rem; }
-
-  /* Notification banner */
+  /* ── Notification banner ── */
   .notif-banner {
     width: calc(100% - 32px);
     max-width: 400px;
@@ -350,7 +370,7 @@
     width: 100%;
   }
 
-  /* Pause toggle */
+  /* ── Pause toggle ── */
   .pause-row {
     display: flex;
     align-items: center;
@@ -402,7 +422,7 @@
     margin-top: 10px;
   }
 
-  /* Quiet hours */
+  /* ── Quiet hours card ── */
   .api-card {
     background: var(--card-bg);
     backdrop-filter: blur(20px);
@@ -488,9 +508,53 @@
   <div class="app-subtitle" id="locationSubtitle">Loading your location...</div>
 </div>
 
-<!-- Main Controls -->
+<!-- Main Card -->
 <div class="card">
 
+  <!-- Temperature display: outside + target side by side -->
+  <div class="temp-display-row">
+    <div class="temp-display-block" id="outsideBlock">
+      <div class="temp-display-label">Outside Now</div>
+      <div class="temp-display-value" id="outsideDisplay">--<span class="unit">°F</span></div>
+      <div class="temp-display-sublabel" id="feelsLike"></div>
+    </div>
+    <div class="temp-display-block" id="targetBlock">
+      <div class="temp-display-label">Your Target</div>
+      <div class="temp-display-value" id="targetDisplay">72<span class="unit">°F</span></div>
+      <div class="temp-display-sublabel">inside goal</div>
+    </div>
+  </div>
+
+  <!-- Status message -->
+  <div class="status-msg" id="statusMsg"></div>
+
+  <!-- Check button -->
+  <button class="check-btn" id="checkBtn" onclick="checkWeather()">
+    Check Outside Now
+  </button>
+  <div class="last-updated" id="lastUpdated"></div>
+  <div class="error-msg" id="errorMsg"></div>
+
+  <hr class="section-divider">
+
+  <!-- Target temp setting -->
+  <div class="section-label">My Target Temperature</div>
+  <div class="temp-input-row">
+    <input class="temp-input" id="targetTemp" type="number" value="72" min="50" max="95" oninput="syncTargetDisplay()">
+    <div class="temp-unit">°F</div>
+  </div>
+  <div class="temp-hint">What temp are you trying to keep it inside?</div>
+
+  <!-- Mode toggle -->
+  <div class="section-label">I'm trying to...</div>
+  <div class="mode-row">
+    <button class="mode-btn active-cool" id="btnCool" onclick="setMode('cool')">❄️ Cool the house</button>
+    <button class="mode-btn" id="btnHeat" onclick="setMode('heat')">🔥 Heat the house</button>
+  </div>
+
+  <hr class="section-divider" style="margin-top:20px;">
+
+  <!-- Zip code -->
   <div class="section-label">📍 My Zip Code</div>
   <div class="zip-row">
     <input class="zip-input" id="zipInput" type="text" inputmode="numeric" maxlength="5" placeholder="95831">
@@ -498,25 +562,7 @@
   </div>
   <div class="zip-saved" id="zipSaved">✓ Zip code saved!</div>
 
-  <div class="section-label">My Target Temperature</div>
-  <div class="temp-input-row">
-    <input class="temp-input" id="targetTemp" type="number" value="72" min="50" max="95">
-    <div class="temp-unit">°F</div>
-  </div>
-  <div class="temp-hint">What temp are you trying to keep it inside?</div>
-
-  <div class="section-label">I'm trying to...</div>
-  <div class="mode-row">
-    <button class="mode-btn active-cool" id="btnCool" onclick="setMode('cool')">❄️ Cool the house</button>
-    <button class="mode-btn" id="btnHeat" onclick="setMode('heat')">🔥 Heat the house</button>
-  </div>
-
-  <button class="check-btn" id="checkBtn" onclick="checkWeather()">
-    Check Outside Now
-  </button>
-  <div class="last-updated" id="lastUpdated"></div>
-  <div class="error-msg" id="errorMsg"></div>
-
+  <!-- Pause -->
   <div class="pause-row">
     <div>
       <div class="pause-label">⏸ Pause while away</div>
@@ -528,24 +574,6 @@
     </label>
   </div>
   <div class="paused-badge" id="pausedBadge">⏸ App is paused — checks are off</div>
-</div>
-
-<!-- Result -->
-<div class="result-card" id="resultCard">
-  <span class="result-emoji" id="resultEmoji"></span>
-  <div class="result-headline" id="resultHeadline"></div>
-  <div class="result-detail" id="resultDetail"></div>
-  <div class="temp-comparison">
-    <div class="temp-block">
-      <div class="temp-block-label">Outside Now</div>
-      <div class="temp-block-value" id="outsideDisplay">--<span>°F</span></div>
-    </div>
-    <div class="divider">→</div>
-    <div class="temp-block">
-      <div class="temp-block-label">Your Target</div>
-      <div class="temp-block-value" id="targetDisplay">--<span>°F</span></div>
-    </div>
-  </div>
 </div>
 
 <!-- Notification prompt -->
@@ -579,40 +607,40 @@
   let currentMode = 'cool';
 
   window.onload = function() {
-    // Load zip
     const savedZip = localStorage.getItem('zip_code') || '95831';
     document.getElementById('zipInput').value = savedZip;
     updateSubtitle(savedZip);
 
-    // Load temp
     const savedTemp = localStorage.getItem('target_temp');
-    if (savedTemp) document.getElementById('targetTemp').value = savedTemp;
+    if (savedTemp) {
+      document.getElementById('targetTemp').value = savedTemp;
+      document.getElementById('targetDisplay').innerHTML = savedTemp + '<span class="unit">°F</span>';
+    }
 
-    // Load mode
     const savedMode = localStorage.getItem('hvac_mode');
     if (savedMode) setMode(savedMode, false);
 
-    // Load quiet hours
     const savedQS = localStorage.getItem('quiet_start');
     const savedQE = localStorage.getItem('quiet_end');
     if (savedQS) document.getElementById('quietStart').value = savedQS;
     if (savedQE) document.getElementById('quietEnd').value = savedQE;
 
-    // Load pause state
     const paused = localStorage.getItem('paused') === 'true';
     document.getElementById('pauseToggle').checked = paused;
     document.getElementById('pausedBadge').style.display = paused ? 'block' : 'none';
 
-    // Show notification prompt if not yet decided
     if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
       document.getElementById('notifBanner').classList.add('show');
     }
 
-    // Auto-check on open
-    if (!paused) {
-      setTimeout(() => checkWeather(true), 800);
-    }
+    if (!paused) setTimeout(() => checkWeather(true), 800);
   };
+
+  function syncTargetDisplay() {
+    const val = document.getElementById('targetTemp').value;
+    document.getElementById('targetDisplay').innerHTML = val + '<span class="unit">°F</span>';
+    localStorage.setItem('target_temp', val);
+  }
 
   function saveZip() {
     const zip = document.getElementById('zipInput').value.trim();
@@ -622,7 +650,6 @@
     const el = document.getElementById('zipSaved');
     el.style.display = 'block';
     setTimeout(() => el.style.display = 'none', 2000);
-    // Re-check with new zip
     checkWeather(true);
   }
 
@@ -638,9 +665,7 @@
     Notification.requestPermission().then(permission => {
       document.getElementById('notifBanner').classList.remove('show');
       if (permission === 'granted') {
-        new Notification('Window Check 🪟', {
-          body: "You'll now get notified when it's time to open your windows!"
-        });
+        new Notification('Window Check 🪟', { body: "You'll get notified when it's time to open your windows!" });
       }
     });
   }
@@ -688,18 +713,12 @@
     errorEl.style.display = 'none';
 
     if (localStorage.getItem('paused') === 'true') {
-      if (!silent) {
-        errorEl.textContent = 'App is paused. Toggle off "Pause while away" to resume.';
-        errorEl.style.display = 'block';
-      }
+      if (!silent) { errorEl.textContent = 'App is paused. Toggle off "Pause while away" to resume.'; errorEl.style.display = 'block'; }
       return;
     }
 
     if (isQuietTime()) {
-      if (!silent) {
-        errorEl.textContent = "You're in quiet hours. Adjust the quiet hours below if you'd like to check now.";
-        errorEl.style.display = 'block';
-      }
+      if (!silent) { errorEl.textContent = "You're in quiet hours. Adjust quiet hours below to check now."; errorEl.style.display = 'block'; }
       return;
     }
 
@@ -715,7 +734,6 @@
       const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${API_KEY}&units=imperial`;
       const response = await fetch(url);
       const data = await response.json();
-
       if (data.cod !== 200) throw new Error(data.message || 'API error');
 
       const outsideTemp = Math.round(data.main.temp);
@@ -727,15 +745,10 @@
     } catch (err) {
       if (!silent) {
         let msg = 'Could not get weather data. ';
-        if (err.message.includes('401') || err.message.includes('Invalid API key')) {
-          msg += 'API key issue — please contact support.';
-        } else if (err.message.includes('city not found') || err.message.includes('zip')) {
-          msg += 'Zip code not found. Double-check your zip code above.';
-        } else if (err.message.includes('Failed to fetch')) {
-          msg += 'Check your internet connection and try again.';
-        } else {
-          msg += err.message;
-        }
+        if (err.message.includes('401') || err.message.includes('Invalid API key')) msg += 'API key issue — please contact support.';
+        else if (err.message.includes('city not found') || err.message.includes('zip')) msg += 'Zip code not found. Double-check your zip above.';
+        else if (err.message.includes('Failed to fetch')) msg += 'Check your internet connection and try again.';
+        else msg += err.message;
         errorEl.textContent = msg;
         errorEl.style.display = 'block';
       }
@@ -746,52 +759,57 @@
   }
 
   function showResult(outside, feels, target, description) {
-    const resultCard = document.getElementById('resultCard');
     const lastUpdated = document.getElementById('lastUpdated');
+    const outsideBlock = document.getElementById('outsideBlock');
+    const targetBlock = document.getElementById('targetBlock');
+    const statusMsg = document.getElementById('statusMsg');
 
-    document.getElementById('outsideDisplay').innerHTML = outside + '<span>°F</span>';
-    document.getElementById('targetDisplay').innerHTML = target + '<span>°F</span>';
+    // Update outside display
+    document.getElementById('outsideDisplay').innerHTML = outside + '<span class="unit">°F</span>';
+    document.getElementById('feelsLike').textContent = `feels like ${feels}°`;
 
-    const diff = outside - target;
+    // Update target display
+    document.getElementById('targetDisplay').innerHTML = target + '<span class="unit">°F</span>';
+
     const shouldOpen = currentMode === 'cool' ? outside <= target : outside >= target;
+    const diff = Math.abs(outside - target);
+
+    // Reset classes
+    outsideBlock.className = 'temp-display-block';
+    targetBlock.className = 'temp-display-block';
+    statusMsg.className = 'status-msg';
 
     if (shouldOpen) {
-      resultCard.className = 'result-card open-windows';
-      if (currentMode === 'cool') {
-        document.getElementById('resultEmoji').textContent = '🪟';
-        document.getElementById('resultHeadline').textContent = 'Open your windows!';
-        document.getElementById('resultDetail').textContent = `It's ${outside}°F outside — at or below your ${target}° target. Turn off the AC and let the fresh air in. Feels like ${feels}°F out there (${description}).`;
-      } else {
-        document.getElementById('resultEmoji').textContent = '☀️';
-        document.getElementById('resultHeadline').textContent = 'Open your windows!';
-        document.getElementById('resultDetail').textContent = `It's ${outside}°F outside — at or above your ${target}° target. Free heat! Let the warm air flow through. Feels like ${feels}°F out there (${description}).`;
-      }
+      // Both green — windows should open
+      outsideBlock.classList.add('just-right');
+      targetBlock.classList.add('target-good');
+      statusMsg.textContent = currentMode === 'cool'
+        ? `🪟 Open your windows! Outside is at or below your target. Turn off the AC and let the fresh air in. (${description})`
+        : `🪟 Open your windows! Outside is at or above your target. Free heat — let the warm air flow through. (${description})`;
+      statusMsg.classList.add('visible', 'good');
+
       if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         new Notification('🪟 Open your windows!', {
           body: `It's ${outside}°F outside — ${currentMode === 'cool' ? 'at or below' : 'at or above'} your ${target}° target. Fresh air time!`
         });
       }
     } else {
-      resultCard.className = 'result-card keep-closed';
-      const howFar = Math.abs(diff);
+      // Color-code outside temp
       if (currentMode === 'cool') {
-        document.getElementById('resultEmoji').textContent = '🌡️';
-        document.getElementById('resultHeadline').textContent = 'Keep the windows closed.';
-        document.getElementById('resultDetail').textContent = `It's ${outside}°F outside — ${howFar}° warmer than your ${target}° target. The AC is your better bet right now. Feels like ${feels}°F (${description}).`;
+        // Too hot outside = red
+        outsideBlock.classList.add('too-hot');
+        statusMsg.textContent = `Keep the windows closed. It's ${diff}° too warm outside. The AC is your better bet right now. Feels like ${feels}°F (${description}).`;
+        statusMsg.classList.add('visible', 'bad-hot');
       } else {
-        document.getElementById('resultEmoji').textContent = '🧥';
-        document.getElementById('resultHeadline').textContent = 'Keep the windows closed.';
-        document.getElementById('resultDetail').textContent = `It's ${outside}°F outside — ${howFar}° cooler than your ${target}° target. Keep the heat on for now. Feels like ${feels}°F (${description}).`;
+        // Too cold outside = blue
+        outsideBlock.classList.add('too-cold');
+        statusMsg.textContent = `Keep the windows closed. It's ${diff}° too cold outside. Keep the heat on for now. Feels like ${feels}°F (${description}).`;
+        statusMsg.classList.add('visible', 'bad-cold');
       }
     }
 
-    resultCard.style.display = 'block';
-
     const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    lastUpdated.textContent = `Last updated at ${timeStr}`;
-
-    setTimeout(() => resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    lastUpdated.textContent = `Last updated at ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   }
 </script>
 </body>
