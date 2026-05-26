@@ -39,28 +39,10 @@
   body.warm-mode { background: linear-gradient(160deg, #fde8c9 0%, #fdf1e8 40%, #fad5c0 100%); }
   body.cool-mode { background: linear-gradient(160deg, #c9d8f5 0%, #e8eef4 40%, #d4dded 100%); }
 
-  .header {
-    width: 100%;
-    padding: 56px 24px 24px;
-    text-align: center;
-  }
-
-  .app-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.2rem;
-    color: var(--text-dark);
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-  }
-
+  .header { width: 100%; padding: 56px 24px 24px; text-align: center; }
+  .app-title { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--text-dark); letter-spacing: -0.5px; line-height: 1.1; }
   .app-title span { font-style: italic; color: var(--cool); }
-
-  .app-subtitle {
-    font-size: 0.85rem;
-    color: var(--neutral);
-    margin-top: 6px;
-    font-weight: 400;
-  }
+  .app-subtitle { font-size: 0.85rem; color: var(--neutral); margin-top: 6px; font-weight: 400; }
 
   .card {
     background: var(--card-bg);
@@ -75,355 +57,38 @@
     border: 1px solid rgba(255,255,255,0.6);
   }
 
-  .section-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
-    color: var(--neutral);
-    margin-bottom: 10px;
-  }
+  .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--neutral); margin-bottom: 10px; }
 
-  /* ── Temp display row (outside + target side by side) ── */
-  .temp-display-row {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    margin-bottom: 20px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.07);
-  }
+  /* Temp display */
+  .temp-display-row { display: flex; align-items: stretch; margin-bottom: 20px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,0,0,0.07); }
+  .temp-display-block { flex: 1; text-align: center; padding: 16px 8px 14px; transition: background 0.4s; background: rgba(0,0,0,0.03); }
+  .temp-display-block:first-child { border-right: 1px solid rgba(0,0,0,0.07); }
+  .temp-display-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--neutral); margin-bottom: 6px; }
+  .temp-display-value { font-family: 'DM Serif Display', serif; font-size: 2.6rem; line-height: 1; color: var(--text-dark); transition: color 0.4s; }
+  .temp-display-value .unit { font-size: 1.1rem; opacity: 0.6; vertical-align: super; }
+  .temp-display-sublabel { font-size: 0.68rem; color: var(--neutral); margin-top: 4px; }
 
-  .temp-display-block {
-    flex: 1;
-    text-align: center;
-    padding: 16px 8px 14px;
-    transition: background 0.4s, color 0.4s;
-    background: rgba(0,0,0,0.03);
-  }
-
-  .temp-display-block:first-child {
-    border-right: 1px solid rgba(0,0,0,0.07);
-  }
-
-  .temp-display-label {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--neutral);
-    margin-bottom: 6px;
-  }
-
-  .temp-display-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.6rem;
-    line-height: 1;
-    color: var(--text-dark);
-    transition: color 0.4s;
-  }
-
-  .temp-display-value .unit {
-    font-size: 1.1rem;
-    opacity: 0.6;
-    vertical-align: super;
-  }
-
-  .temp-display-sublabel {
-    font-size: 0.68rem;
-    color: var(--neutral);
-    margin-top: 4px;
-  }
-
-  /* Color states for outside temp block */
-  .temp-display-block.too-hot {
-    background: rgba(192,57,43,0.08);
-  }
+  .temp-display-block.too-hot { background: rgba(192,57,43,0.08); }
   .temp-display-block.too-hot .temp-display-value { color: var(--red); }
   .temp-display-block.too-hot .temp-display-label { color: var(--red); opacity: 0.7; }
-
-  .temp-display-block.too-cold {
-    background: rgba(36,113,163,0.08);
-  }
+  .temp-display-block.too-cold { background: rgba(36,113,163,0.08); }
   .temp-display-block.too-cold .temp-display-value { color: var(--blue); }
   .temp-display-block.too-cold .temp-display-label { color: var(--blue); opacity: 0.7; }
-
-  .temp-display-block.just-right {
-    background: rgba(45,106,79,0.1);
-  }
+  .temp-display-block.just-right { background: rgba(45,106,79,0.1); }
   .temp-display-block.just-right .temp-display-value { color: var(--green); }
   .temp-display-block.just-right .temp-display-label { color: var(--green); opacity: 0.8; }
-
-  /* Target block when windows should open */
-  .temp-display-block.target-good {
-    background: rgba(45,106,79,0.1);
-  }
+  .temp-display-block.target-good { background: rgba(45,106,79,0.1); }
   .temp-display-block.target-good .temp-display-value { color: var(--green); }
 
-  /* ── Status message under temps ── */
-  .status-msg {
-    font-size: 0.83rem;
-    line-height: 1.5;
-    color: var(--neutral);
-    text-align: center;
-    min-height: 20px;
-    margin-bottom: 16px;
-    padding: 0 4px;
-    display: none;
-  }
-
+  .status-msg { font-size: 0.83rem; line-height: 1.5; color: var(--neutral); text-align: center; min-height: 20px; margin-bottom: 16px; padding: 0 4px; display: none; }
   .status-msg.visible { display: block; }
   .status-msg.good { color: var(--green); font-weight: 600; }
   .status-msg.bad-hot { color: var(--red); }
   .status-msg.bad-cold { color: var(--blue); }
+  .status-msg.out-of-range { color: var(--neutral); font-style: italic; }
 
-  /* ── Check button ── */
-  .check-btn {
-    width: 100%;
-    padding: 18px;
-    border-radius: 16px;
-    border: none;
-    background: linear-gradient(135deg, var(--cool), #2a6496);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.3px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 16px rgba(69,123,157,0.35);
-    margin-bottom: 8px;
-  }
-
-  .check-btn:active { transform: scale(0.98); }
-  .check-btn.heating { background: linear-gradient(135deg, var(--warm), #c1440e); box-shadow: 0 4px 16px rgba(231,111,81,0.35); }
-  .check-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .last-updated {
-    text-align: center;
-    font-size: 0.73rem;
-    color: var(--neutral);
-    min-height: 18px;
-    margin-bottom: 20px;
-    display: block;
-  }
-
-  /* ── Divider ── */
-  .section-divider {
-    border: none;
-    border-top: 1px solid rgba(0,0,0,0.06);
-    margin: 4px 0 20px;
-  }
-
-  /* ── Target temp input ── */
-  .temp-input-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 6px;
-  }
-
-  .temp-input {
-    font-family: 'DM Serif Display', serif;
-    font-size: 3rem;
-    color: var(--text-dark);
-    width: 110px;
-    border: none;
-    border-bottom: 2px solid var(--sky-mid);
-    background: transparent;
-    text-align: center;
-    outline: none;
-    padding: 0 4px 4px;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-
-  .temp-input:focus { border-color: var(--cool); }
-
-  .temp-unit {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.8rem;
-    color: var(--neutral);
-  }
-
-  .temp-hint {
-    font-size: 0.78rem;
-    color: var(--neutral);
-    margin-bottom: 20px;
-  }
-
-  /* ── Mode toggle ── */
-  .mode-row { display: flex; gap: 8px; margin-bottom: 0; }
-
-  .mode-btn {
-    flex: 1;
-    padding: 10px 8px;
-    border-radius: 12px;
-    border: 2px solid transparent;
-    background: rgba(0,0,0,0.05);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--neutral);
-  }
-
-  .mode-btn.active-cool { background: rgba(69,123,157,0.12); border-color: var(--cool); color: var(--cool); }
-  .mode-btn.active-heat { background: rgba(231,111,81,0.12); border-color: var(--warm); color: var(--warm); }
-
-  /* ── Zip row ── */
-  .zip-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-
-  .zip-input {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--text-dark);
-    width: 140px;
-    border: none;
-    border-bottom: 2px solid var(--sky-mid);
-    background: transparent;
-    text-align: center;
-    outline: none;
-    padding: 4px 4px 6px;
-    transition: border-color 0.2s;
-    letter-spacing: 3px;
-  }
-
-  .zip-input:focus { border-color: var(--cool); }
-
-  .zip-save-btn {
-    padding: 8px 14px;
-    border-radius: 10px;
-    border: none;
-    background: var(--text-dark);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .zip-save-btn:active { transform: scale(0.96); }
-
-  .zip-saved {
-    font-size: 0.75rem;
-    color: var(--leaf);
-    font-weight: 600;
-    display: none;
-    margin-bottom: 4px;
-  }
-
-  /* ── Spinner ── */
-  .spinner {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255,255,255,0.4);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-right: 8px;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── Notification banner ── */
-  .notif-banner {
-    width: calc(100% - 32px);
-    max-width: 400px;
-    margin: 0 16px 16px;
-    padding: 14px 18px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.6);
-    box-shadow: var(--shadow);
-    display: none;
-    font-size: 0.83rem;
-    color: var(--text-dark);
-    line-height: 1.5;
-  }
-
-  .notif-banner.show { display: block; }
-
-  .notif-banner button {
-    margin-top: 10px;
-    padding: 9px 18px;
-    border-radius: 10px;
-    border: none;
-    background: var(--text-dark);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  /* ── Pause toggle ── */
-  .pause-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(0,0,0,0.06);
-  }
-
-  .pause-label { font-size: 0.83rem; color: var(--neutral); font-weight: 500; }
-
-  .pause-toggle { position: relative; width: 48px; height: 28px; cursor: pointer; }
-  .pause-toggle input { opacity: 0; width: 0; height: 0; }
-
-  .toggle-slider {
-    position: absolute;
-    inset: 0;
-    background: #ccc;
-    border-radius: 28px;
-    transition: 0.3s;
-  }
-
-  .toggle-slider:before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    left: 4px;
-    bottom: 4px;
-    background: white;
-    border-radius: 50%;
-    transition: 0.3s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  }
-
-  input:checked + .toggle-slider { background: var(--warm); }
-  input:checked + .toggle-slider:before { transform: translateX(20px); }
-
-  .paused-badge {
-    display: none;
-    background: rgba(231,111,81,0.12);
-    border: 1px solid rgba(231,111,81,0.3);
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-size: 0.82rem;
-    color: var(--warm);
-    font-weight: 500;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  /* ── Quiet hours card ── */
-  .api-card {
+  /* Forecast card */
+  .forecast-card {
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -434,71 +99,120 @@
     padding: 24px;
     margin: 0 16px 16px;
     border: 1px solid rgba(255,255,255,0.6);
+    display: none;
   }
 
+  .forecast-card.visible { display: block; }
+
+  .window-schedule {
+    background: rgba(45,106,79,0.08);
+    border: 1px solid rgba(45,106,79,0.2);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .window-schedule-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+  .window-schedule-time { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--green); line-height: 1.3; }
+  .window-schedule-none { font-size: 0.85rem; color: var(--neutral); font-style: italic; }
+
+  /* Hourly strip */
+  .hourly-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+  .hourly-strip::-webkit-scrollbar { display: none; }
+
+  .hourly-item {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 10px 8px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.04);
+    min-width: 52px;
+    border: 1px solid transparent;
+  }
+
+  .hourly-item.open-window { background: rgba(45,106,79,0.1); border-color: rgba(45,106,79,0.25); }
+  .hourly-item.too-warm { background: rgba(192,57,43,0.07); }
+  .hourly-item.too-cool { background: rgba(36,113,163,0.07); }
+  .hourly-item.out-range { opacity: 0.4; }
+
+  .hourly-time { font-size: 0.65rem; font-weight: 600; color: var(--neutral); margin-bottom: 4px; }
+  .hourly-temp { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--text-dark); }
+  .hourly-item.open-window .hourly-temp { color: var(--green); }
+  .hourly-item.too-warm .hourly-temp { color: var(--red); }
+  .hourly-item.too-cool .hourly-temp { color: var(--blue); }
+  .hourly-icon { font-size: 0.75rem; margin-top: 2px; }
+
+  /* Check button */
+  .check-btn { width: 100%; padding: 18px; border-radius: 16px; border: none; background: linear-gradient(135deg, var(--cool), #2a6496); color: white; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; letter-spacing: 0.3px; transition: all 0.2s; box-shadow: 0 4px 16px rgba(69,123,157,0.35); margin-bottom: 8px; }
+  .check-btn:active { transform: scale(0.98); }
+  .check-btn.heating { background: linear-gradient(135deg, var(--warm), #c1440e); box-shadow: 0 4px 16px rgba(231,111,81,0.35); }
+  .check-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .last-updated { text-align: center; font-size: 0.73rem; color: var(--neutral); min-height: 18px; margin-bottom: 20px; display: block; }
+
+  .section-divider { border: none; border-top: 1px solid rgba(0,0,0,0.06); margin: 4px 0 20px; }
+
+  /* Target temp */
+  .temp-input-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .temp-input { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--text-dark); width: 110px; border: none; border-bottom: 2px solid var(--sky-mid); background: transparent; text-align: center; outline: none; padding: 0 4px 4px; transition: border-color 0.2s; -webkit-appearance: none; }
+  .temp-input:focus { border-color: var(--cool); }
+  .temp-unit { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--neutral); }
+  .temp-hint { font-size: 0.78rem; color: var(--neutral); margin-bottom: 20px; }
+
+  /* Temp range */
+  .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .range-input { width: 70px; padding: 8px 10px; border-radius: 10px; border: 2px solid var(--sky-mid); background: rgba(255,255,255,0.7); font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text-dark); text-align: center; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+  .range-input:focus { border-color: var(--cool); }
+  .range-sep { color: var(--neutral); font-size: 0.85rem; }
+  .range-hint { font-size: 0.75rem; color: var(--neutral); margin-bottom: 20px; }
+
+  /* Mode toggle */
+  .mode-row { display: flex; gap: 8px; }
+  .mode-btn { flex: 1; padding: 10px 8px; border-radius: 12px; border: 2px solid transparent; background: rgba(0,0,0,0.05); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--neutral); }
+  .mode-btn.active-cool { background: rgba(69,123,157,0.12); border-color: var(--cool); color: var(--cool); }
+  .mode-btn.active-heat { background: rgba(231,111,81,0.12); border-color: var(--warm); color: var(--warm); }
+
+  /* Zip */
+  .zip-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .zip-input { font-family: 'DM Sans', sans-serif; font-size: 1.4rem; font-weight: 600; color: var(--text-dark); width: 140px; border: none; border-bottom: 2px solid var(--sky-mid); background: transparent; text-align: center; outline: none; padding: 4px 4px 6px; transition: border-color 0.2s; letter-spacing: 3px; }
+  .zip-input:focus { border-color: var(--cool); }
+  .zip-save-btn { padding: 8px 14px; border-radius: 10px; border: none; background: var(--text-dark); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+  .zip-saved { font-size: 0.75rem; color: var(--leaf); font-weight: 600; display: none; margin-bottom: 4px; }
+
+  /* Toggles */
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06); }
+  .toggle-label { font-size: 0.83rem; color: var(--neutral); font-weight: 500; }
+  .toggle-sub { font-size: 0.72rem; color: var(--neutral); margin-top: 2px; }
+  .ios-toggle { position: relative; width: 48px; height: 28px; cursor: pointer; }
+  .ios-toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: #ccc; border-radius: 28px; transition: 0.3s; }
+  .toggle-slider:before { content: ''; position: absolute; width: 20px; height: 20px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+  input:checked + .toggle-slider { background: var(--warm); }
+  input:checked + .toggle-slider:before { transform: translateX(20px); }
+  .away-toggle input:checked + .toggle-slider { background: var(--cool); }
+
+  .status-badge { display: none; border-radius: 12px; padding: 10px 14px; font-size: 0.82rem; font-weight: 500; text-align: center; margin-top: 10px; }
+  .status-badge.paused { background: rgba(231,111,81,0.12); border: 1px solid rgba(231,111,81,0.3); color: var(--warm); }
+  .status-badge.away { background: rgba(69,123,157,0.12); border: 1px solid rgba(69,123,157,0.3); color: var(--cool); }
+
+  /* Notification banner */
+  .notif-banner { width: calc(100% - 32px); max-width: 400px; margin: 0 16px 16px; padding: 14px 18px; border-radius: 16px; background: rgba(255,255,255,0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow); display: none; font-size: 0.83rem; color: var(--text-dark); line-height: 1.5; }
+  .notif-banner.show { display: block; }
+  .notif-banner button { margin-top: 10px; padding: 9px 18px; border-radius: 10px; border: none; background: var(--text-dark); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; width: 100%; }
+
+  /* Quiet hours card */
+  .api-card { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; box-shadow: var(--shadow); width: calc(100% - 32px); max-width: 400px; padding: 24px; margin: 0 16px 16px; border: 1px solid rgba(255,255,255,0.6); }
   .quiet-row { display: flex; gap: 10px; margin-top: 10px; }
+  .quiet-input { flex: 1; padding: 10px 12px; border-radius: 12px; border: 2px solid var(--sky-mid); background: rgba(255,255,255,0.7); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--text-dark); outline: none; }
+  .save-btn { margin-top: 12px; padding: 12px 20px; border-radius: 12px; border: none; background: var(--text-dark); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; width: 100%; }
+  .saved-indicator { display: none; font-size: 0.8rem; color: var(--leaf); font-weight: 600; margin-top: 8px; text-align: center; }
 
-  .quiet-input {
-    flex: 1;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 2px solid var(--sky-mid);
-    background: rgba(255,255,255,0.7);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    color: var(--text-dark);
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  .error-msg { display: none; background: rgba(231,111,81,0.12); border: 1px solid rgba(231,111,81,0.3); border-radius: 12px; padding: 12px 16px; font-size: 0.83rem; color: var(--warm); margin-top: 12px; line-height: 1.4; }
 
-  .quiet-input:focus { border-color: var(--cool); }
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  .save-btn {
-    margin-top: 12px;
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: none;
-    background: var(--text-dark);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.2s;
-  }
-
-  .save-btn:active { transform: scale(0.98); }
-
-  .saved-indicator {
-    display: none;
-    font-size: 0.8rem;
-    color: var(--leaf);
-    font-weight: 600;
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  .error-msg {
-    display: none;
-    background: rgba(231,111,81,0.12);
-    border: 1px solid rgba(231,111,81,0.3);
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 0.83rem;
-    color: var(--warm);
-    margin-top: 12px;
-    line-height: 1.4;
-  }
-
-  .footer {
-    text-align: center;
-    font-size: 0.72rem;
-    color: var(--neutral);
-    padding: 0 24px;
-    line-height: 1.6;
-    opacity: 0.7;
-  }
+  .footer { text-align: center; font-size: 0.72rem; color: var(--neutral); padding: 0 24px; line-height: 1.6; opacity: 0.7; }
 </style>
 </head>
 <body>
@@ -511,7 +225,7 @@
 <!-- Main Card -->
 <div class="card">
 
-  <!-- Temperature display: outside + target side by side -->
+  <!-- Temp display -->
   <div class="temp-display-row">
     <div class="temp-display-block" id="outsideBlock">
       <div class="temp-display-label">Outside Now</div>
@@ -525,19 +239,15 @@
     </div>
   </div>
 
-  <!-- Status message -->
   <div class="status-msg" id="statusMsg"></div>
 
-  <!-- Check button -->
-  <button class="check-btn" id="checkBtn" onclick="checkWeather()">
-    Check Outside Now
-  </button>
+  <button class="check-btn" id="checkBtn" onclick="checkWeather()">Check Outside Now</button>
   <div class="last-updated" id="lastUpdated"></div>
   <div class="error-msg" id="errorMsg"></div>
 
   <hr class="section-divider">
 
-  <!-- Target temp setting -->
+  <!-- Target temp -->
   <div class="section-label">My Target Temperature</div>
   <div class="temp-input-row">
     <input class="temp-input" id="targetTemp" type="number" value="72" min="50" max="95" oninput="syncTargetDisplay()">
@@ -545,7 +255,17 @@
   </div>
   <div class="temp-hint">What temp are you trying to keep it inside?</div>
 
-  <!-- Mode toggle -->
+  <!-- Temp range limits -->
+  <div class="section-label">Acceptable Outside Range</div>
+  <div class="range-row">
+    <input class="range-input" id="tempMin" type="number" value="60" min="30" max="90" placeholder="60">
+    <span class="range-sep">°F to</span>
+    <input class="range-input" id="tempMax" type="number" value="85" min="30" max="110" placeholder="85">
+    <span class="range-sep">°F</span>
+  </div>
+  <div class="range-hint">Only suggest opening windows when outside temp is within this range.</div>
+
+  <!-- Mode -->
   <div class="section-label">I'm trying to...</div>
   <div class="mode-row">
     <button class="mode-btn active-cool" id="btnCool" onclick="setMode('cool')">❄️ Cool the house</button>
@@ -554,7 +274,7 @@
 
   <hr class="section-divider" style="margin-top:20px;">
 
-  <!-- Zip code -->
+  <!-- Zip -->
   <div class="section-label">📍 My Zip Code</div>
   <div class="zip-row">
     <input class="zip-input" id="zipInput" type="text" inputmode="numeric" maxlength="5" placeholder="95831">
@@ -563,17 +283,44 @@
   <div class="zip-saved" id="zipSaved">✓ Zip code saved!</div>
 
   <!-- Pause -->
-  <div class="pause-row">
+  <div class="toggle-row">
     <div>
-      <div class="pause-label">⏸ Pause while away</div>
-      <div style="font-size:0.72rem;color:var(--neutral);margin-top:2px;">On vacation? Silence all checks.</div>
+      <div class="toggle-label">⏸ Pause while away</div>
+      <div class="toggle-sub">On vacation? Silence all checks.</div>
     </div>
-    <label class="pause-toggle">
+    <label class="ios-toggle">
       <input type="checkbox" id="pauseToggle" onchange="togglePause()">
       <span class="toggle-slider"></span>
     </label>
   </div>
-  <div class="paused-badge" id="pausedBadge">⏸ App is paused — checks are off</div>
+  <div class="status-badge paused" id="pausedBadge">⏸ App is paused — checks are off</div>
+
+  <!-- Away from home -->
+  <div class="toggle-row">
+    <div>
+      <div class="toggle-label">🏠 Away from home</div>
+      <div class="toggle-sub">Out for the day? Suppress notifications.</div>
+    </div>
+    <label class="ios-toggle away-toggle">
+      <input type="checkbox" id="awayToggle" onchange="toggleAway()">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+  <div class="status-badge away" id="awayBadge">🏠 Away mode — notifications paused until you're back</div>
+
+</div>
+
+<!-- Forecast Card -->
+<div class="forecast-card" id="forecastCard">
+  <div class="section-label">📅 Today's Window Forecast</div>
+
+  <div class="window-schedule" id="windowSchedule">
+    <div class="window-schedule-title">🪟 Best time to open windows</div>
+    <div class="window-schedule-time" id="windowScheduleTime">Loading forecast...</div>
+  </div>
+
+  <div class="section-label" style="margin-bottom:12px;">Hourly Outlook</div>
+  <div class="hourly-strip" id="hourlyStrip"></div>
 </div>
 
 <!-- Notification prompt -->
@@ -617,6 +364,11 @@
       document.getElementById('targetDisplay').innerHTML = savedTemp + '<span class="unit">°F</span>';
     }
 
+    const savedMin = localStorage.getItem('temp_min');
+    const savedMax = localStorage.getItem('temp_max');
+    if (savedMin) document.getElementById('tempMin').value = savedMin;
+    if (savedMax) document.getElementById('tempMax').value = savedMax;
+
     const savedMode = localStorage.getItem('hvac_mode');
     if (savedMode) setMode(savedMode, false);
 
@@ -629,11 +381,20 @@
     document.getElementById('pauseToggle').checked = paused;
     document.getElementById('pausedBadge').style.display = paused ? 'block' : 'none';
 
+    const away = localStorage.getItem('away') === 'true';
+    document.getElementById('awayToggle').checked = away;
+    document.getElementById('awayBadge').style.display = away ? 'block' : 'none';
+
     if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
       document.getElementById('notifBanner').classList.add('show');
     }
 
-    if (!paused) setTimeout(() => checkWeather(true), 800);
+    if (!paused) {
+      setTimeout(() => checkWeather(true), 800);
+      setTimeout(() => loadForecast(), 1200);
+    } else {
+      setTimeout(() => loadForecast(), 1200);
+    }
   };
 
   function syncTargetDisplay() {
@@ -651,6 +412,7 @@
     el.style.display = 'block';
     setTimeout(() => el.style.display = 'none', 2000);
     checkWeather(true);
+    loadForecast();
   }
 
   function updateSubtitle(zip) {
@@ -658,15 +420,10 @@
   }
 
   function requestNotifications() {
-    if (!('Notification' in window)) {
-      alert('Try opening this in Safari and adding it to your Home Screen first, then enable notifications.');
-      return;
-    }
+    if (!('Notification' in window)) { alert('Try opening this in Safari and adding it to your Home Screen first.'); return; }
     Notification.requestPermission().then(permission => {
       document.getElementById('notifBanner').classList.remove('show');
-      if (permission === 'granted') {
-        new Notification('Window Check 🪟', { body: "You'll get notified when it's time to open your windows!" });
-      }
+      if (permission === 'granted') new Notification('Window Check 🪟', { body: "You'll get notified when it's time to open your windows!" });
     });
   }
 
@@ -674,6 +431,12 @@
     const paused = document.getElementById('pauseToggle').checked;
     localStorage.setItem('paused', paused);
     document.getElementById('pausedBadge').style.display = paused ? 'block' : 'none';
+  }
+
+  function toggleAway() {
+    const away = document.getElementById('awayToggle').checked;
+    localStorage.setItem('away', away);
+    document.getElementById('awayBadge').style.display = away ? 'block' : 'none';
   }
 
   function saveQuietHours() {
@@ -706,6 +469,19 @@
     return cur >= start && cur < end;
   }
 
+  function getTempLimits() {
+    const min = parseFloat(document.getElementById('tempMin').value) || 60;
+    const max = parseFloat(document.getElementById('tempMax').value) || 85;
+    localStorage.setItem('temp_min', min);
+    localStorage.setItem('temp_max', max);
+    return { min, max };
+  }
+
+  function isWithinRange(temp) {
+    const { min, max } = getTempLimits();
+    return temp >= min && temp <= max;
+  }
+
   async function checkWeather(silent = false) {
     const errorEl = document.getElementById('errorMsg');
     const btn = document.getElementById('checkBtn');
@@ -722,7 +498,7 @@
       return;
     }
 
-    const zip = localStorage.getItem('zip_code') || document.getElementById('zipInput').value.trim() || '95831';
+    const zip = localStorage.getItem('zip_code') || '95831';
     const targetTemp = parseFloat(document.getElementById('targetTemp').value);
     localStorage.setItem('target_temp', targetTemp);
 
@@ -741,13 +517,14 @@
       const description = data.weather[0].description;
 
       showResult(outsideTemp, feels, targetTemp, description);
+      loadForecast();
 
     } catch (err) {
       if (!silent) {
         let msg = 'Could not get weather data. ';
-        if (err.message.includes('401') || err.message.includes('Invalid API key')) msg += 'API key issue — please contact support.';
-        else if (err.message.includes('city not found') || err.message.includes('zip')) msg += 'Zip code not found. Double-check your zip above.';
-        else if (err.message.includes('Failed to fetch')) msg += 'Check your internet connection and try again.';
+        if (err.message.includes('401')) msg += 'API key issue — please contact support.';
+        else if (err.message.includes('zip') || err.message.includes('city not found')) msg += 'Zip code not found. Double-check above.';
+        else if (err.message.includes('Failed to fetch')) msg += 'Check your internet connection.';
         else msg += err.message;
         errorEl.textContent = msg;
         errorEl.style.display = 'block';
@@ -764,23 +541,28 @@
     const targetBlock = document.getElementById('targetBlock');
     const statusMsg = document.getElementById('statusMsg');
 
-    // Update outside display
     document.getElementById('outsideDisplay').innerHTML = outside + '<span class="unit">°F</span>';
     document.getElementById('feelsLike').textContent = `feels like ${feels}°`;
-
-    // Update target display
     document.getElementById('targetDisplay').innerHTML = target + '<span class="unit">°F</span>';
 
-    const shouldOpen = currentMode === 'cool' ? outside <= target : outside >= target;
+    const { min, max } = getTempLimits();
+    const withinRange = outside >= min && outside <= max;
+    const shouldOpen = withinRange && (currentMode === 'cool' ? outside <= target : outside >= target);
     const diff = Math.abs(outside - target);
+    const isAway = localStorage.getItem('away') === 'true';
 
-    // Reset classes
     outsideBlock.className = 'temp-display-block';
     targetBlock.className = 'temp-display-block';
     statusMsg.className = 'status-msg';
 
-    if (shouldOpen) {
-      // Both green — windows should open
+    if (!withinRange) {
+      // Outside acceptable range entirely
+      outsideBlock.classList.add(outside > max ? 'too-hot' : 'too-cold');
+      statusMsg.textContent = outside > max
+        ? `Outside is ${outside}°F — above your max comfort range of ${max}°F. Keep windows closed.`
+        : `Outside is ${outside}°F — below your min comfort range of ${min}°F. Keep windows closed.`;
+      statusMsg.classList.add('visible', 'out-of-range');
+    } else if (shouldOpen) {
       outsideBlock.classList.add('just-right');
       targetBlock.classList.add('target-good');
       statusMsg.textContent = currentMode === 'cool'
@@ -788,20 +570,18 @@
         : `🪟 Open your windows! Outside is at or above your target. Free heat — let the warm air flow through. (${description})`;
       statusMsg.classList.add('visible', 'good');
 
-      if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+      // Only notify if not away
+      if (!isAway && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
         new Notification('🪟 Open your windows!', {
           body: `It's ${outside}°F outside — ${currentMode === 'cool' ? 'at or below' : 'at or above'} your ${target}° target. Fresh air time!`
         });
       }
     } else {
-      // Color-code outside temp
       if (currentMode === 'cool') {
-        // Too hot outside = red
         outsideBlock.classList.add('too-hot');
         statusMsg.textContent = `Keep the windows closed. It's ${diff}° too warm outside. The AC is your better bet right now. Feels like ${feels}°F (${description}).`;
         statusMsg.classList.add('visible', 'bad-hot');
       } else {
-        // Too cold outside = blue
         outsideBlock.classList.add('too-cold');
         statusMsg.textContent = `Keep the windows closed. It's ${diff}° too cold outside. Keep the heat on for now. Feels like ${feels}°F (${description}).`;
         statusMsg.classList.add('visible', 'bad-cold');
@@ -810,6 +590,113 @@
 
     const now = new Date();
     lastUpdated.textContent = `Last updated at ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  }
+
+  // ── Forecast ──────────────────────────────────────────
+
+  async function loadForecast() {
+    const zip = localStorage.getItem('zip_code') || '95831';
+    try {
+      const url = `https://api.openweathermap.org/data/2.5/forecast?zip=${zip},us&appid=${API_KEY}&units=imperial&cnt=16`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (String(data.cod) !== '200') return;
+
+      const target = parseFloat(document.getElementById('targetTemp').value) || 72;
+      const { min, max } = getTempLimits();
+
+      // Get today's date string
+      const today = new Date().toLocaleDateString();
+
+      // Filter to next 24 hours
+      const hours = data.list.filter(item => {
+        const d = new Date(item.dt * 1000);
+        return true; // take all 16 (they're 3hr intervals = 48 hrs, we take first 16 = 48hr)
+      }).slice(0, 12); // next 36 hours at 3hr intervals
+
+      // Build hourly strip (interpolate between 3hr slots)
+      buildHourlyStrip(hours, target, min, max);
+
+      // Find window open/close times
+      findWindowTimes(hours, target, min, max);
+
+      document.getElementById('forecastCard').classList.add('visible');
+
+    } catch(e) {
+      const card = document.getElementById('forecastCard');
+      card.classList.add('visible');
+      document.getElementById('windowScheduleTime').innerHTML = `<span class="window-schedule-none">Error: ${e.message}</span>`;
+      document.getElementById('hourlyStrip').innerHTML = `<span style="font-size:0.75rem;color:var(--neutral)">Could not load forecast: ${e.message}</span>`;
+    }
+  }
+
+  function buildHourlyStrip(hours, target, min, max) {
+    const strip = document.getElementById('hourlyStrip');
+    strip.innerHTML = '';
+
+    hours.forEach(item => {
+      const temp = Math.round(item.main.temp);
+      const time = new Date(item.dt * 1000);
+      const timeStr = time.toLocaleTimeString([], { hour: 'numeric', hour12: true });
+      const withinRange = temp >= min && temp <= max;
+      const goodToOpen = withinRange && (currentMode === 'cool' ? temp <= target : temp >= target);
+
+      const div = document.createElement('div');
+      div.className = 'hourly-item';
+      if (!withinRange) div.classList.add('out-range');
+      else if (goodToOpen) div.classList.add('open-window');
+      else if (currentMode === 'cool' && temp > target) div.classList.add('too-warm');
+      else if (currentMode === 'heat' && temp < target) div.classList.add('too-cool');
+
+      const icon = goodToOpen ? '🪟' : (temp > target && currentMode === 'cool') ? '🌡️' : '❄️';
+
+      div.innerHTML = `
+        <div class="hourly-time">${timeStr}</div>
+        <div class="hourly-temp">${temp}°</div>
+        <div class="hourly-icon">${icon}</div>
+      `;
+      strip.appendChild(div);
+    });
+  }
+
+  function findWindowTimes(hours, target, min, max) {
+    const scheduleEl = document.getElementById('windowScheduleTime');
+
+    // Find consecutive blocks where it's good to open
+    let openStart = null;
+    let openEnd = null;
+    let windows = [];
+
+    hours.forEach((item, i) => {
+      const temp = Math.round(item.main.temp);
+      const withinRange = temp >= min && temp <= max;
+      const goodToOpen = withinRange && (currentMode === 'cool' ? temp <= target : temp >= target);
+      const time = new Date(item.dt * 1000);
+
+      if (goodToOpen) {
+        if (openStart === null) openStart = time;
+        openEnd = time;
+      } else {
+        if (openStart !== null) {
+          windows.push({ start: openStart, end: openEnd });
+          openStart = null;
+          openEnd = null;
+        }
+      }
+    });
+
+    if (openStart !== null) windows.push({ start: openStart, end: openEnd });
+
+    if (windows.length === 0) {
+      scheduleEl.innerHTML = `<span class="window-schedule-none">No ideal window time found in the next 36 hours based on your settings.</span>`;
+      document.querySelector('.window-schedule').style.background = 'rgba(0,0,0,0.04)';
+      document.querySelector('.window-schedule').style.borderColor = 'rgba(0,0,0,0.1)';
+      document.querySelector('.window-schedule-title').style.color = 'var(--neutral)';
+    } else {
+      const fmt = t => t.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+      const lines = windows.slice(0, 2).map(w => `${fmt(w.start)} – ${fmt(w.end)}`).join('<br>');
+      scheduleEl.innerHTML = lines;
+    }
   }
 </script>
 </body>
